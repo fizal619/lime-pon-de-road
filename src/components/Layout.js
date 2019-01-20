@@ -14,19 +14,19 @@ class Layout extends Component {
         <Menu pointing>
           <Menu.Item name='home' active={activeItem === '/'} onClick={this.handleItemClick} />
           <Menu.Menu position='right'>
-              {user ? 
+              {user ?
                 <Menu.Item>
                   <Image src={user.photoURL} size="mini" />
                 </Menu.Item>
               :
               null
             }
-            <Menu.Item 
-              name={ user ? 'logout': 'login' } 
-              onClick={ user ? logout : login} />          
+            <Menu.Item
+              name={ user ? 'LEFF': 'INSIDE❗' }
+              onClick={ user ? logout : login} />
           </Menu.Menu>
         </Menu>
-        
+
         {children}
 
       </div>

@@ -7,6 +7,7 @@ import Home from './components/Home';
 import logo from './logo.svg';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
+import UserHome from './components/UserHome.js';
 
 
 class App extends Component {
@@ -22,12 +23,12 @@ class App extends Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
-      } 
+      }
     });
   }
 
   login() {
-    auth.signInWithPopup(provider) 
+    auth.signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
         this.setState({
@@ -45,13 +46,6 @@ class App extends Component {
     });
   }
 
-  handleSearchChange(e) {
-    console.log(e.target.value);
-    this.setState({
-      term: e.target.value
-    });
-  }
-
   render() {
 
     console.log('APP Props', this.props);
@@ -59,14 +53,23 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Layout 
-            user={this.state.user}            
+          <Layout
+            user={this.state.user}
             login={this.login.bind(this)}
             logout={this.logout.bind(this)}>
-            <Route  
-              exact 
-              path='/' 
-              render={props=><Home {...props} />}/>
+            {this.state.user ?
+              <Route
+                exact
+                path='/'
+                render={props=><UserHome {...props } user={this.state.user} />}/>
+            :
+              <Route
+                exact
+                path='/'
+                render={props=><Home {...props} />}/>
+            }
+
+
           </Layout>
         </div>
       </BrowserRouter>
