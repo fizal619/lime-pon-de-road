@@ -19,6 +19,7 @@ import {
   Header,
   Progress
 } from 'semantic-ui-react';
+import RoomList from './RoomList.js';
 
 class UserHome extends Component {
 
@@ -38,7 +39,9 @@ class UserHome extends Component {
   handleChangeFilename = event =>
     this.setState({ filename: event.target.value });
   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
-  handleProgress = progress => this.setState({ progress });
+  handleProgress = (progress, task) => {
+    this.setState({ progress });
+  }
   handleUploadError = error => {
     this.setState({ isUploading: false });
     console.error(error);
@@ -49,12 +52,15 @@ class UserHome extends Component {
       filename: filename,
       owner: this.props.user.uid,
       users: [this.props.user.uid],
-
+      playerState: {
+        play: false,
+        currentTime: 0
+      }
     })
     this.setState({ filename: '', progress: 0, isUploading: false, name: ''});
     firebase
       .storage()
-      .ref(this.props.user.uid)
+      .ref('videos')
       .child(filename)
       .getDownloadURL()
       .then(url => console.log(url));
@@ -64,7 +70,7 @@ class UserHome extends Component {
 
   render(){
 
-    console.log(this.state)
+    // console.log(this.state)
 
     return (
       <Container >
@@ -95,7 +101,7 @@ class UserHome extends Component {
                   accept="video/*"
                   name="video"
                   randomizeFilename
-                  storageRef={firebase.storage().ref(this.props.user.uid)}
+                  storageRef={firebase.storage().ref('videos')}
                   onUploadStart={this.handleUploadStart}
                   onUploadError={this.handleUploadError}
                   onUploadSuccess={this.handleUploadSuccess}
@@ -106,6 +112,10 @@ class UserHome extends Component {
 
             </Grid.Column>
           </Grid.Row>
+
+          <Grid.Row>
+            <RoomList user={this.props.user} />
+          </Grid.Row>
         </Grid>
       </Container>
     )
@@ -115,8 +125,16 @@ class UserHome extends Component {
 const mapFirebaseToProps = (props, ref) => {
   if (props.user) {
     return {
-      rooms: 'rooms/' + props.user.uid,
-      addRoom: (roomName, roomData) => ref(`rooms/${props.user.uid}/${roomName}`).set(roomData)
+      rooms: 'rooms',
+      addRoom: (roomName, roomData) => {
+        const key = ref().child('posts').push().key;
+        ref(`rooms/${key}`).set(roomData);
+      },
+      removeRoom: (id, room) => {
+        if (props.user.uid === room.owner) {
+          ref(`rooms/${id}`).remove();
+        }
+      }
     }
   }
 }

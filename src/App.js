@@ -8,6 +8,7 @@ import logo from './logo.svg';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import UserHome from './components/UserHome.js';
+import Player from './components/Player.js';
 
 
 class App extends Component {
@@ -57,19 +58,26 @@ class App extends Component {
             user={this.state.user}
             login={this.login.bind(this)}
             logout={this.logout.bind(this)}>
+
             {this.state.user ?
-              <Route
-                exact
-                path='/'
-                render={props=><UserHome {...props } user={this.state.user} />}/>
+              <Switch>
+                <Route
+                  exact
+                  path='/room/:id'
+                  render={props=><Player {...props } user={this.state.user} />}
+                />
+                <Route
+                  exact
+                  path='/'
+                  render={props=><UserHome {...props } user={this.state.user} />}
+                />
+              </Switch>
             :
               <Route
                 exact
                 path='/'
                 render={props=><Home {...props} />}/>
             }
-
-
           </Layout>
         </div>
       </BrowserRouter>
