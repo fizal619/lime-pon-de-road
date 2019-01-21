@@ -26,15 +26,26 @@ class Player extends Component {
   state = {}
 
   async componentWillReceiveProps(n){
-    //set url
     if (n.room && !this.state.url){
       try {
+        //set url
         const url = await firebase
                       .storage()
                       .ref('videos')
                       .child(n.room.filename)
                       .getDownloadURL();
         this.setState({url: `${url}#t=${n.room.playerState.currentTime}`});
+
+        // pause the video if I left the page
+        if (n.room.playerState.play && n.room.owner === this.props.user.uid){
+          this.props.updatePlay(false);
+        }
+
+        //add self to the room
+        if (!n.room.users.includes(this.props.user.uid)){
+          this.props.addSelfToRoom(this.props.user.uid, n.room.users)
+        }
+
       } catch (e) {
         console.log(e);
       }
@@ -112,13 +123,13 @@ class Player extends Component {
               controls={this.isOwner()}
               {...this.playerPropsDecider()}
               src={`${this.state.url}`}
-              preload
+              preload='true'
               width='80%'
               height="500px"
             />
           </Grid.Row>
           <Grid.Row>
-            <Button color='teal'> <Icon name='tv'/> Fullscreen</Button>
+            <Button color='teal'> <Icon name='tv'/> Mek it big </Button>
           </Grid.Row>
         </Grid>
       </Container>
@@ -140,6 +151,9 @@ const mapFirebaseToProps = (props, ref) => {
       updatePlay: bool => {
         ref(`rooms/${props.match.params.id}/playerState/play`).set(bool);
       },
+      addSelfToRoom: (uid, users) => {
+        ref(`rooms/${props.match.params.id}/users`).set(users.concat([uid]));
+      }
     }
   }
 }

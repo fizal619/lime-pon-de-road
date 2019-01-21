@@ -9,6 +9,7 @@ import {
   Grid,
   Label,
   Divider,
+  Button,
   Loader,
   Header
 } from 'semantic-ui-react';
@@ -28,6 +29,9 @@ export default class Home extends Component {
         <Divider hidden />
         <Grid centered columns={'equal'}>
           <Header> Must lawg in fuh use this skunt. </Header>
+          <Grid.Row>
+            <Button onClick={this.props.login} color='teal'>Inside❗❗❗</Button>
+          </Grid.Row>
         </Grid>
       </Container>
     )

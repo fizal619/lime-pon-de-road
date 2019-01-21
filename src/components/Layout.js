@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import { Input, Menu, Image } from 'semantic-ui-react'
+import {  Link } from 'react-router-dom';
 
 class Layout extends Component {
 
@@ -12,7 +13,9 @@ class Layout extends Component {
       <div>
 
         <Menu pointing>
-          <Menu.Item name='home' active={activeItem === '/'} onClick={this.handleItemClick} />
+          <Menu.Item name='home' active={activeItem === '/'} onClick={this.handleItemClick} >
+            <Link to='/' >Home</Link>
+          </Menu.Item>
           <Menu.Menu position='right'>
               {user ?
                 <Menu.Item>

@@ -95,18 +95,18 @@ class UserHome extends Component {
                 onChange={this.handleChangeName}
               />
               <label className="ui label large">
-                {this.state.filename ? 'Uploading ' + this.state.filename : 'Pick a flim from computah'}
-                <FileUploader
-                  hidden
-                  accept="video/*"
-                  name="video"
-                  randomizeFilename
-                  storageRef={firebase.storage().ref('videos')}
-                  onUploadStart={this.handleUploadStart}
-                  onUploadError={this.handleUploadError}
-                  onUploadSuccess={this.handleUploadSuccess}
-                  onProgress={this.handleProgress}
-                />
+                <Icon name='cloud upload' /> {this.state.filename ? `Uploading ${this.state.filename}` : 'Pick wan file'}
+                  <FileUploader
+                    hidden
+                    accept="video/*"
+                    name="video"
+                    randomizeFilename
+                    storageRef={firebase.storage().ref('videos')}
+                    onUploadStart={this.handleUploadStart}
+                    onUploadError={this.handleUploadError}
+                    onUploadSuccess={this.handleUploadSuccess}
+                    onProgress={this.handleProgress}
+                  />
 
               </label>
 

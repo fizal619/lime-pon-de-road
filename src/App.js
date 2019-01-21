@@ -24,6 +24,11 @@ class App extends Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
+        this.props.setUserObject({
+          uid: user.uid,
+          email: user.email,
+          avatar: user.photoURL
+        })
       }
     });
   }
@@ -76,7 +81,7 @@ class App extends Component {
               <Route
                 exact
                 path='/'
-                render={props=><Home {...props} />}/>
+                render={props=><Home {...props} login={this.login.bind(this)} />}/>
             }
           </Layout>
         </div>
@@ -86,7 +91,9 @@ class App extends Component {
 }
 
 const mapFirebaseToProps = (props, ref) => ({
-  test: 'test'
+  setUserObject: user => {
+    ref('users').child(user.uid).set(user);
+  }
 });
 
 export default connect(mapFirebaseToProps)(App)

@@ -29,17 +29,28 @@ class RoomList extends Component {
 
 
 
-  renderRooms = () => {
+  renderRooms =  () => {
     const rooms = [];
+
+    //don't render if not ready
+    if (!this.props.users || !this.props.rooms) return null;
+
     for (let key in this.props.rooms) {
       let room = this.props.rooms[key];
+      console.log(this.props.users[room.owner]);
       rooms.push(
         <Card key={key}>
           <Card.Content>
             <Card.Header>{room.name}</Card.Header>
-            <Card.Meta>owner</Card.Meta>
             <Card.Description>
               <Icon name="user" /> {room.users.length} people deh watching.
+              <br />
+              {room.users.map(uid => {
+                    return <Label key={key+uid} image>
+                            <img src={this.props.users[uid].avatar} />
+                            {this.props.users[uid].email.split('@')[0]}
+                          </Label>
+              })}
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
@@ -90,6 +101,7 @@ const mapFirebaseToProps = (props, ref) => {
   if (props.user) {
     return {
       rooms: 'rooms',
+      users: 'users',
       addRoom: (roomName, roomData) => {
         const key = ref().child('posts').push().key;
         ref(`rooms/${key}`).set(roomData);
