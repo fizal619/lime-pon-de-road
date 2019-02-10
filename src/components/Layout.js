@@ -1,12 +1,12 @@
 import React, { Component} from 'react';
-import { Input, Menu, Image } from 'semantic-ui-react'
+import { Menu, Image } from 'semantic-ui-react'
 import {  Link } from 'react-router-dom';
 
 class Layout extends Component {
 
   render() {
     const activeItem = this.props.children.props.path;
-    console.log('Layout Props', this.props);
+    // console.log('Layout Props', this.props);
     const { login, logout, user, children } = this.props;
 
     return (

@@ -4,20 +4,14 @@ import {connect} from 'react-firebase';
 import firebase from '../firebase.js';
 
 import {
-  Segment,
   Card,
   Icon,
-  Image,
-  Dimmer,
   Container,
   Grid,
   Label,
   Divider,
-  Loader,
-  Input,
   Button,
   Header,
-  Progress
 } from 'semantic-ui-react';
 
 class RoomList extends Component {
@@ -37,7 +31,7 @@ class RoomList extends Component {
 
     for (let key in this.props.rooms) {
       let room = this.props.rooms[key];
-      console.log(this.props.users[room.owner]);
+      // console.log(this.props.users[room.owner]);
       rooms.push(
         <Card key={key}>
           <Card.Content>

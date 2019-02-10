@@ -129,7 +129,7 @@ class Player extends Component {
             />
           </Grid.Row>
           <Grid.Row>
-            <Button color='teal'> <Icon name='tv'/> Mek it big </Button>
+            <Button color='teal' onClick={this.toggleFullScreen.bind(this)}> <Icon name='tv'/> Mek it big </Button>
           </Grid.Row>
         </Grid>
       </Container>

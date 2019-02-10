@@ -1,16 +1,9 @@
 import React, { Component} from 'react';
 import {
-  Segment,
-  Card,
-  Icon,
-  Image,
-  Dimmer,
   Container,
   Grid,
-  Label,
   Divider,
   Button,
-  Loader,
   Header
 } from 'semantic-ui-react';
 

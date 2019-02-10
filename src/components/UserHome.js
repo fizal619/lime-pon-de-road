@@ -5,16 +5,10 @@ import {connect} from 'react-firebase';
 import firebase from '../firebase.js';
 
 import {
-  Segment,
-  Card,
   Icon,
-  Image,
-  Dimmer,
   Container,
   Grid,
-  Label,
   Divider,
-  Loader,
   Input,
   Header,
   Progress
