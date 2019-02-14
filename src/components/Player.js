@@ -29,11 +29,7 @@ class Player extends Component {
     if (n.room && !this.state.url){
       try {
         //set url
-        const url = await firebase
-                      .storage()
-                      .ref('videos')
-                      .child(n.room.filename)
-                      .getDownloadURL();
+        const url = n.room.filename
         this.setState({url: `${url}#t=${n.room.playerState.currentTime}`});
 
         // pause the video if I left the page
@@ -116,7 +112,7 @@ class Player extends Component {
         <Divider hidden />
         <Grid centered columns={'equal'}>
           <Grid.Row>
-            <Header> De TV </Header>
+            <Header> De TV - {this.props.room ? this.props.room.name : '' } </Header>
           </Grid.Row>
           <Grid.Row>
             <video

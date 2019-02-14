@@ -34,3 +34,7 @@ label {
 .hidden {
   opacity: 0;
 }
+
+._react_fileupload_progress_content {
+  display: none;
+}

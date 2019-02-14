@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import FileUploadProgress  from 'react-fileupload-progress';
 import FileUploader from "react-firebase-file-uploader";
 import {connect} from 'react-firebase';
 
@@ -10,6 +11,7 @@ import {
   Grid,
   Divider,
   Input,
+  Button,
   Header,
   Progress
 } from 'semantic-ui-react';
@@ -32,32 +34,21 @@ class UserHome extends Component {
     this.setState({ name: event.target.value });
   handleChangeFilename = event =>
     this.setState({ filename: event.target.value });
-  handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
-  handleProgress = (progress, task) => {
-    this.setState({ progress });
-  }
-  handleUploadError = error => {
-    this.setState({ isUploading: false });
-    console.error(error);
-  };
-  handleUploadSuccess = filename => {
+
+  handleSubmit = (e) => {
     this.props.addRoom(this.state.name, {
       name: this.state.name,
-      filename: filename,
+      filename: this.state.filename,
       owner: this.props.user.uid,
       users: [this.props.user.uid],
+      watching: ['keep'],
       playerState: {
         play: false,
         currentTime: 0
       }
     })
     this.setState({ filename: '', progress: 0, isUploading: false, name: ''});
-    firebase
-      .storage()
-      .ref('videos')
-      .child(filename)
-      .getDownloadURL()
-      .then(url => console.log(url));
+
   };
 
 
@@ -75,35 +66,24 @@ class UserHome extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              {
-                this.state.isUploading
-                ?
-                  <Progress value={Math.ceil(this.state.progress)} success total='100' progress='percent' />
-                :
-                  <Progress className="hidden" value={0} success total='100' progress='percent' />
-              }
               <Input
                 label="Wah fuh call it?"
                 name="name"
                 value={this.state.name}
                 onChange={this.handleChangeName}
               />
-              <label className="ui label large">
-                <Icon name='cloud upload' /> {this.state.filename ? `Uploading ${this.state.filename}` : 'Pick wan file'}
-                  <FileUploader
-                    hidden
-                    accept="video/*"
-                    name="video"
-                    randomizeFilename
-                    storageRef={firebase.storage().ref('videos')}
-                    onUploadStart={this.handleUploadStart}
-                    onUploadError={this.handleUploadError}
-                    onUploadSuccess={this.handleUploadSuccess}
-                    onProgress={this.handleProgress}
-                  />
-
-              </label>
-
+            </Grid.Column>
+            <Grid.Column>
+               <Input
+                label="Ah direct link tuh it?"
+                name="filename"
+                value={this.state.filename}
+                onChange={this.handleChangeFilename}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Button onClick={this.handleSubmit}>Create</Button>
+              <br />
             </Grid.Column>
           </Grid.Row>
 

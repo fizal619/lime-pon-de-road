@@ -102,11 +102,6 @@ const mapFirebaseToProps = (props, ref) => {
       },
       removeRoom: (id, room) => {
         if (props.user.uid === room.owner) {
-          firebase
-            .storage()
-            .ref('videos')
-            .child(room.filename)
-            .delete();
           ref(`rooms/${id}`).remove();
         }
       }
